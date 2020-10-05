@@ -1,0 +1,21 @@
+{
+    "name": "websrv",
+    "description": "Tiny web server based on koa.",
+    "version": "1989.6.4",
+    "private": false,
+    "homepage": "https://github.com/Leask/websrv",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js",
+        "debug": "node --inspect debug.js",
+        "prepublishOnly": "npm version patch && npm update && ( git commit -am 'npm update' || true ) && git pull && git push"
+    },
+    "author": "Leask Wong <i@leaskh.com>",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Leask/websrv"
+    },
+    "dependencies": {},
+    "devDependencies": {}
+}
