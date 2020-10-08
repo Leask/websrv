@@ -113,3 +113,4 @@ dist
 package-lock.json
 debug.js
 controllers
+public/storage
