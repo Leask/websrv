@@ -113,5 +113,5 @@ dist
 package-lock.json
 debug.js
 controllers
-public/storage
+public/storage/*
 !public/storage/.gitkeep
