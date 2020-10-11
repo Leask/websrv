@@ -27,7 +27,7 @@
         "koa-router": "^9.4.0",
         "koa-static": "^5.0.0",
         "koa-useragent": "^4.0.0",
-        "utilitas": "^1989.6.95"
+        "utilitas": "^1989.6.96"
     },
     "devDependencies": {}
 }
