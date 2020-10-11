@@ -1,7 +1,7 @@
 'use strict';
 
 const httpStatus = require('http-status');
-const token = require('./token');
+const { token } = require('../');
 const path = require('path');
 const fs = require('fs');
 
@@ -39,15 +39,21 @@ const errorHandler = async (ctx, next) => {
     }
 };
 
-const resolveToken = async (ctx, next) => {
+const verifyToken = async (ctx, next) => {
     const t = ctx.request.headers.token || ctx.query.token;
     try { ctx.req.verification = await token.verifyForUser(t); } catch (err) { }
     await next(); // Use ctx.req instead of ctx to ensure compatibility to multer.
 };
 
 const poke = async (ctx, next) => {
-    // ctx.userAgent
-    ctx.body = 'OK';
+    ctx.ok({
+        time: new Date(),
+        userAgent: ctx.userAgent.source,
+    });
+};
+
+const resolveToken = async (ctx, next) => {
+    ctx.ok(ctx.req.verification);
 };
 
 const notFound = (ctx, next) => {
@@ -74,23 +80,31 @@ module.exports = {
         {
             path: wildcardPath,
             method: wildcardMethod,
-            priority: -8964,
-            process: [errorHandler, extendCtx, resolveToken],
+            priority: -8960,
+            process: [errorHandler, extendCtx, verifyToken],
             auth: false,
             upload: false,
         },
         {
-            path: ['poke'],
-            method: ['GET'],
-            priority: -8934,
+            path: ['api/poke'],
+            method: wildcardMethod,
+            priority: -8950,
             process: [poke],
             auth: false,
             upload: false,
         },
         {
+            path: ['api/tokens'],
+            method: ['GET'],
+            priority: -8940,
+            process: [resolveToken],
+            auth: true,
+            upload: false,
+        },
+        {
             path: wildcardPath,
             method: wildcardMethod,
-            priority: 8964,
+            priority: 8960,
             process: [notFound],
             auth: false,
             upload: false,
