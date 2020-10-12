@@ -4,6 +4,7 @@ const path = require('path');
 const fs = require('fs');
 
 module.exports = require('utilitas');
+
 const libPath = path.join(__dirname, 'lib');
 fs.readdirSync(libPath).filter((file) => {
     return /\.js$/i.test(file);

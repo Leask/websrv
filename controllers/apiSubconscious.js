@@ -9,31 +9,25 @@ const [wildcardPath, wildcardMethod] = [['(.*)'], ['ALL']];
 
 const extendCtx = async (ctx, next) => {
     ctx.ok = (data) => {
-        ctx.body = { errors: null, data: data, success: true };
+        ctx.body = { data: data || {}, error: null, success: true };
     };
-    ctx.er = (error, code) => {
-        ctx.status = code || 400;
-        ctx.body = { error: error && error.error || error, success: false };
-    };
-    ctx.throws = (err) => {
-        ctx.status = err.status || 400;
+    ctx.er = (error, status) => {
+        ctx.status = error && error.status || status || 400;
         ctx.body = {
-            error: err.message || httpStatus[`${ctx.status}_NAME`],
-            details: err.errors || {},
+            error: error && error.message || error
+                || httpStatus[`${ctx.status}_NAME`] || 'Unknown error.',
+            details: error && error.details || {}, success: false,
         };
     };
     await next();
 };
 
 const errorHandler = async (ctx, next) => {
-    try {
-        await next();
-    } catch (err) {
+    try { await next(); } catch (err) {
         if (err.status
             && err.status >= httpStatus.BAD_REQUEST
             && err.status < httpStatus.INTERNAL_SERVER_ERROR) {
-            ctx.throws(err);
-            return;
+            return ctx.er(err);
         }
         throw err;
     }
