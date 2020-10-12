@@ -14,7 +14,8 @@ const extendCtx = async (ctx, next) => {
     ctx.er = (error, status) => {
         ctx.status = error && error.status || status || 400;
         ctx.body = {
-            error: error && error.message || error
+            error: error && error.message
+                || (typeof error === 'string' ? error : null)
                 || httpStatus[`${ctx.status}_NAME`] || 'Unknown error.',
             details: error && error.details || {}, success: false,
         };

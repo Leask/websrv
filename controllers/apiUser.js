@@ -40,15 +40,29 @@ const emailVerificationRequest = async (ctx, next) => {
 };
 
 const emailVerificationResponse = async (ctx, next) => {
-    ctx.ok({});
+    const resp = await user.verifyEmail(ctx.request.body.token);
+    ctx.ok(resp);
 };
 
-const recoverPasswordRequest = async (ctx, next) => {
-    ctx.ok({});
+const passwordRecoveryRequest = async (ctx, next) => {
+    await user.sendPasswordRecoveryEmail(ctx.request.body.email);
+    ctx.ok();
 };
 
 const changePassword = async (ctx, next) => {
-    ctx.ok({});
+    let resp = null;
+    if (ctx.request.body.token) {
+        resp = await user.changePasswordByVerificationToken(
+            ctx.request.body.token, ctx.request.body.newPassword
+        );
+    } else if (ctx.request.body.email) {
+        resp = await user.changePasswordByEmailAndPassword(
+            ctx.request.body.email,
+            ctx.request.body.curPassword,
+            ctx.request.body.newPassword
+        );
+    } else { throw Object.assign(new Error(), { status: 400 }); }
+    ctx.ok(resp);
 };
 
 module.exports = {
@@ -81,34 +95,25 @@ module.exports = {
             auth: true,
         },
         {
-            path: getPath('emailverification/request'),
+            path: getPath('email/challenge'),
             method: 'POST',
             process: emailVerificationRequest,
             auth: true,
-        }
-        // {
-        //     path: ['api/poke'],
-        //     method: wildcardMethod,
-        //     priority: -8950,
-        //     process: [poke],
-        //     auth: false,
-        //     upload: false,
-        // },
-        // {
-        //     path: ['api/tokens'],
-        //     method: ['GET'],
-        //     priority: -8940,
-        //     process: [resolveToken],
-        //     auth: true,
-        //     upload: false,
-        // },
-        // {
-        //     path: wildcardPath,
-        //     method: wildcardMethod,
-        //     priority: 8960,
-        //     process: [notFound],
-        //     auth: false,
-        //     upload: false,
-        // },
+        },
+        {
+            path: getPath('email/response'),
+            method: 'POST',
+            process: emailVerificationResponse,
+        },
+        {
+            path: getPath('password/recover'),
+            method: 'POST',
+            process: passwordRecoveryRequest,
+        },
+        {
+            path: getPath('password/change'),
+            method: 'POST',
+            process: changePassword,
+        },
     ],
 };
