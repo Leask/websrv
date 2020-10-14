@@ -18,7 +18,7 @@ const signin = async (ctx, next) => {
 };
 
 const getMyProfile = async (ctx, next) => {
-    ctx.ok(ctx.req.verification.user);
+    ctx.ok(ctx.verification.user);
 };
 
 const queryById = async (ctx, next) => {
@@ -27,14 +27,14 @@ const queryById = async (ctx, next) => {
 };
 
 const updateProfile = async (ctx, next) => {
-    const resp = await user.updateById(ctx.req.verification.user.id,
-        ctx.request.body, { curUser: ctx.req.verification.user });
+    const resp = await user.updateById(ctx.verification.user.id,
+        ctx.request.body, { curUser: ctx.verification.user });
     ctx.ok(resp);
 };
 
 const emailVerificationRequest = async (ctx, next) => {
     await user.sendVerificationEmail(
-        ctx.req.verification.user.email, { user: ctx.req.verification.user }
+        ctx.verification.user.email, { user: ctx.verification.user }
     );
     ctx.ok();
 };

@@ -36,8 +36,9 @@ const errorHandler = async (ctx, next) => {
 
 const verifyToken = async (ctx, next) => {
     const t = ctx.request.headers.token || ctx.query.token;
-    try { ctx.req.verification = await token.verifyForUser(t); } catch (err) { }
-    await next(); // Use ctx.req instead of ctx to ensure compatibility to multer.
+    // Use ctx.req instead of ctx to ensure compatibility to multer if you need.
+    try { ctx.verification = await token.verifyForUser(t); } catch (err) { }
+    await next();
 };
 
 const poke = async (ctx, next) => {
@@ -48,7 +49,7 @@ const poke = async (ctx, next) => {
 };
 
 const resolveToken = async (ctx, next) => {
-    ctx.ok(ctx.req.verification);
+    ctx.ok(ctx.verification);
 };
 
 const notFound = (ctx, next) => {
