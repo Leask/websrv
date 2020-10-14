@@ -66,6 +66,7 @@ const changePassword = async (ctx, next) => {
 };
 
 module.exports = {
+    name: 'user',
     actions: [
         {
             path: getPath('signup'),

@@ -9,7 +9,7 @@ const storage = async (ctx, next) => {
 };
 
 module.exports = {
-    disabled: false,
+    name: 'storage',
     actions: [
         {
             path: 'api/storage',

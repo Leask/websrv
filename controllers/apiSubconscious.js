@@ -71,6 +71,7 @@ const notFound = (ctx, next) => {
 };
 
 module.exports = {
+    name: 'subconscious',
     disabled: false,
     actions: [
         {
