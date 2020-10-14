@@ -3,5 +3,8 @@
 const { websrv } = require('.');
 
 (async () => {
-    await websrv.up({ modules: ['user', 'storage'] });
+    await websrv.up({
+        user: {},
+        storage: {},
+    });
 })();
