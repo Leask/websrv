@@ -79,6 +79,7 @@ module.exports = {
             process: [errorHandler, extendCtx, verifyToken],
             auth: false,
             upload: false,
+            share: false,
         },
         {
             path: ['api/poke'],
@@ -87,6 +88,7 @@ module.exports = {
             process: [poke],
             auth: false,
             upload: false,
+            share: false,
         },
         {
             path: ['api/tokens'],
@@ -95,6 +97,7 @@ module.exports = {
             process: [resolveToken],
             auth: true,
             upload: false,
+            share: false,
         },
         {
             path: wildcardPath,
@@ -103,6 +106,7 @@ module.exports = {
             process: [notFound],
             auth: false,
             upload: false,
+            share: false,
         },
     ],
 };
