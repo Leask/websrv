@@ -12,7 +12,7 @@ module.exports = {
     disabled: false,
     actions: [
         {
-            path: ['api/storage'],
+            path: 'api/storage',
             method: 'POST',
             process: storage,
             auth: true,
