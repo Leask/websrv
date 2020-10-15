@@ -9,7 +9,7 @@ const storage = async (ctx, next) => {
 };
 
 module.exports = {
-    name: 'storage',
+    link: 'storage',
     actions: [
         {
             path: 'api/storage',

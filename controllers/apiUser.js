@@ -1,9 +1,20 @@
 'use strict';
 
-const { user } = require('../');
+const { user, token } = require('../');
 const path = require('path');
 
 const getPath = (subPath) => { return path.join('api/users', subPath); };
+
+const verifyToken = async (ctx, next) => {
+    const t = ctx.request.headers.token || ctx.query.token;
+    // Use ctx.req instead of ctx to ensure compatibility to multer if you need.
+    try { ctx.verification = await token.verifyForUser(t); } catch (err) { }
+    await next();
+};
+
+const resolveToken = async (ctx, next) => {
+    ctx.ok(ctx.verification);
+};
 
 const signup = async (ctx, next) => {
     const resp = await user.signup(ctx.request.body);
@@ -66,8 +77,20 @@ const changePassword = async (ctx, next) => {
 };
 
 module.exports = {
-    name: 'user',
+    link: 'user',
     actions: [
+        {
+            path: '(.*)',
+            method: 'ALL',
+            priority: -8950,
+            process: verifyToken,
+        },
+        {
+            path: 'api/tokens',
+            method: 'GET',
+            process: resolveToken,
+            auth: true,
+        },
         {
             path: getPath('signup'),
             method: 'POST',
