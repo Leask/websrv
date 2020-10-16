@@ -2,7 +2,7 @@
 
 const httpStatus = require('http-status');
 const path = require('path');
-const fs = require('fs');
+const fs = require('fs').promises;
 
 const [wildcardPath, wildcardMethod] = [['(.*)'], ['ALL']];
 
@@ -40,22 +40,15 @@ const poke = async (ctx, next) => {
     });
 };
 
-const notFound = (ctx, next) => {
-    return new Promise((resolve, reject) => {
-        const status = 404;
-        if (/^\/api\/.*/.test(ctx.request.url)) {
-            ctx.er({ error: 'API not found.' }, status);
-            return resolve();
-        }
-        fs.readFile(path.join(
-            path.dirname(module.filename), '../public/404.html'
-        ), 'utf8', (err, resp) => {
-            if (err) { return reject(err); }
-            ctx.body = resp;
-            ctx.status = status;
-            resolve();
-        });
-    });
+const notFound = async (ctx, next) => {
+    const status = 404;
+    if (/^\/api\/.*/.test(ctx.request.url)) {
+        return ctx.er({ error: 'API not found.' }, status);
+    }
+    ctx.body = await fs.readFile(path.join(
+        path.dirname(module.filename), '../public/404.html'
+    ), 'utf8');
+    ctx.status = status;
 };
 
 module.exports = {
