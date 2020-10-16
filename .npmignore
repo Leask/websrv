@@ -4,3 +4,5 @@ debug
 debug.js
 gears
 package-lock.json
+public/storage/*
+!public/storage/.gitkeep
