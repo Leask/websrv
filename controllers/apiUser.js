@@ -17,15 +17,12 @@ const resolveToken = async (ctx, next) => {
 };
 
 const signup = async (ctx, next) => {
-    const resp = await user.signup(ctx.request.body);
-    ctx.ok(resp);
+    ctx.ok(await user.signup(ctx.request.body));
 };
 
 const signin = async (ctx, next) => {
-    const resp = await user.signin(
-        ctx.request.body.email, ctx.request.body.password
-    );
-    ctx.ok(resp);
+    ctx.ok(await user.signin(ctx.request.body.email,
+        ctx.request.body.password));
 };
 
 const getMyProfile = async (ctx, next) => {
@@ -33,14 +30,12 @@ const getMyProfile = async (ctx, next) => {
 };
 
 const queryById = async (ctx, next) => {
-    const resp = await user.queryById(ctx.params.id);
-    ctx.ok(resp);
+    ctx.ok(await user.queryByIdOrEmail(ctx.params.id));
 };
 
 const updateProfile = async (ctx, next) => {
-    const resp = await user.updateById(ctx.verification.user.id,
-        ctx.request.body, { curUser: ctx.verification.user });
-    ctx.ok(resp);
+    ctx.ok(await user.updateById(ctx.verification.user.id,
+        ctx.request.body, { curUser: ctx.verification.user }));
 };
 
 const emailVerificationRequest = async (ctx, next) => {
@@ -51,8 +46,7 @@ const emailVerificationRequest = async (ctx, next) => {
 };
 
 const emailVerificationResponse = async (ctx, next) => {
-    const resp = await user.verifyEmail(ctx.request.body.token);
-    ctx.ok(resp);
+    ctx.ok(await user.verifyEmail(ctx.request.body.token));
 };
 
 const passwordRecoveryRequest = async (ctx, next) => {
