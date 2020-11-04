@@ -36,6 +36,6 @@
         "multer": "^1.4.2",
         "passport": "^0.4.1",
         "passport-twitter": "^1.0.4",
-        "utilitas": "^1989.6.132"
+        "utilitas": "^1989.6.133"
     }
 }
