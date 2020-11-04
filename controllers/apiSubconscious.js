@@ -4,7 +4,17 @@ const httpStatus = require('http-status');
 const path = require('path');
 const fs = require('fs').promises;
 
+const [ptcHttp, ptcHttps] = ['http', 'https'];
 const [wildcardPath, wildcardMethod] = [['(.*)'], ['ALL']];
+
+const analyze = (ctx, next) => {
+    ctx.originProtocol = ctx.socket.encrypted || (ctx.app.proxy
+        && ctx.get('X-Forwarded-Proto').split(/\s*,\s*/)[0] === ptcHttps)
+        ? ptcHttps : ptcHttp; // patch: https://github.com/koajs/koa/issues/974
+    ctx.encrypted = ctx.originProtocol === ptcHttps;
+    ctx.cookies.secure = true;
+    return next();
+};
 
 const extendCtx = async (ctx, next) => {
     ctx.ok = (data) => {
@@ -59,7 +69,7 @@ module.exports = {
             path: wildcardPath,
             method: wildcardMethod,
             priority: -8960,
-            process: [errorHandler, extendCtx],
+            process: [analyze, errorHandler, extendCtx],
             auth: false,
             upload: false,
             share: false,
