@@ -12,7 +12,7 @@ module.exports = {
         {
             path: getUrls(auth.sTwitter),
             method: 'GET',
-            process: [auth.authenticate(auth.sTwitter), (x) => { console.log(x); }],
+            process: auth.authenticate(auth.sTwitter),
         },
     ],
 };
