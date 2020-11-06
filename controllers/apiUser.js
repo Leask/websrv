@@ -6,9 +6,11 @@ const path = require('path');
 const getPath = (subPath) => { return path.join('api/users', subPath); };
 
 const verifyToken = async (ctx, next) => {
-    const t = ctx.request.headers.token || ctx.query.token;
+    const tkn = (ctx.get('Authorization')
+        || ctx.get('token')).replace(/^Bearer\ */i, '');
     // Use ctx.req instead of ctx to ensure compatibility to multer if you need.
-    try { ctx.verification = await token.verifyForUser(t); } catch (err) { }
+    // This tips is for old version of multer only.
+    try { ctx.verification = await token.verifyForUser(tkn); } catch (err) { }
     await next();
 };
 
