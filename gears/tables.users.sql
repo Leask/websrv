@@ -1,8 +1,8 @@
 CREATE TABLE `users` (
     `id`              VARCHAR(255) NOT NULL,
     `email`           VARCHAR(255) DEFAULT NULL,
-    `password`        VARCHAR(255) NOT NULL,
-    `salt`            VARCHAR(255) NOT NULL,
+    `password`        VARCHAR(255) DEFAULT NULL,
+    `salt`            VARCHAR(255) DEFAULT NULL,
     `name`            VARCHAR(255) DEFAULT NULL,
     `avatar`          VARCHAR(255) DEFAULT NULL,
     `bio`             VARCHAR(255) DEFAULT NULL,

@@ -11,8 +11,7 @@ const analyze = (ctx, next) => {
     ctx.originProtocol = ctx.socket.encrypted || (ctx.app.proxy
         && ctx.get('X-Forwarded-Proto').split(/\s*,\s*/)[0] === ptcHttps)
         ? ptcHttps : ptcHttp; // patch: https://github.com/koajs/koa/issues/974
-    ctx.encrypted = ctx.originProtocol === ptcHttps;
-    ctx.cookies.secure = true;
+    ctx.cookies.secure = ctx.encrypted = ctx.originProtocol === ptcHttps;
     return next();
 };
 
