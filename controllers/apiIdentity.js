@@ -7,6 +7,7 @@ const getUrls = (prdr, opt) => {
 };
 
 const authCallback = async (ctx, next) => {
+    console.log(ctx.req.user);
     ctx.redirect(`${identity.successRedirect}?token=${ctx.req.user.token.id}`);
 };
 

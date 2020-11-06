@@ -1,5 +1,7 @@
 CREATE TABLE `identities` (
     `id`              VARCHAR(255) NOT NULL,
+    `provider`        VARCHAR(255) NOT NULL,
+    `account`         VARCHAR(255) NOT NULL,
     `userId`          VARCHAR(255) DEFAULT NULL,
     `username`        VARCHAR(255) DEFAULT NULL,
     `fullName`        VARCHAR(255) DEFAULT NULL,
@@ -13,6 +15,8 @@ CREATE TABLE `identities` (
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE INDEX provider  ON identities(provider);
+CREATE INDEX account   ON identities(account);
 CREATE INDEX userId    ON identities(userId);
 CREATE INDEX username  ON identities(username);
 CREATE INDEX fullName  ON identities(fullName);
