@@ -1,20 +1,20 @@
 'use strict';
 
-const storage = async (ctx, next) => {
+const wrap = async (ctx, next) => {
     const resp = {};
-    ctx.req.files.map((file) => {
+    ctx.request.files.map((file) => {
         resp[file.fieldname || file.originalname] = file.receipt;
     });
     ctx.ok(resp);
 };
 
 module.exports = {
-    link: 'storage',
+    link: 'file',
     actions: [
         {
-            path: 'api/storage',
+            path: 'api/files',
             method: 'POST',
-            process: storage,
+            process: wrap,
             auth: true,
             upload: true,
             share: true,
