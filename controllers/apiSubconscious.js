@@ -14,7 +14,7 @@ const analyze = (ctx, next) => {
         && ctx.get('X-Forwarded-Proto').split(/\s*,\s*/)[0] === ptcHttps)
         ? ptcHttps : ptcHttp; // patch: https://github.com/koajs/koa/issues/974
     ctx.cookies.secure = ctx.encrypted = ctx.originProtocol === ptcHttps;
-    ctx.userAgent.versionNormalized
+    ctx.userAgent._agent.versionNormalized
         = utilitas.parseVersion(ctx.userAgent.version);
     return next();
 };
