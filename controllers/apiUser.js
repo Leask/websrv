@@ -76,7 +76,7 @@ module.exports = {
     link: 'user',
     actions: [
         {
-            path: '(.*)',
+            path: '*',
             method: 'ALL',
             priority: -8950,
             process: verifyToken,

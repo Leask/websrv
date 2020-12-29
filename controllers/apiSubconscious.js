@@ -5,7 +5,7 @@ const path = require('path');
 const fs = require('fs').promises;
 
 const [ptcHttp, ptcHttps] = ['http', 'https'];
-const [wildcardPath, wildcardMethod] = [['(.*)'], ['ALL']];
+const [wildcardPath, wildcardMethod] = [['*'], ['*']];
 
 const analyze = (ctx, next) => {
     ctx.originProtocol = ctx.socket.encrypted || (ctx.app.proxy
