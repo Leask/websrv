@@ -16,6 +16,9 @@ const analyze = async (ctx, next) => {
     ctx.cookies.secure = ctx.encrypted = ctx.originProtocol === ptcHttps;
     ctx.userAgent._agent.versionNormalized
         = utilitas.parseVersion(ctx.userAgent.version);
+    if (/^::ffff:\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(ctx.request.ip)) {
+        ctx.request.ip = ctx.request.ip.replace(/^::ffff:/, '');
+    }
     ctx.userAgent._agent.geoIp
         = ctx.request.ip ? await geoIp.lookup(ctx.request.ip) : null;
     await next();
